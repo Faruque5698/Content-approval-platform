@@ -4,6 +4,8 @@ namespace App\Repositories\Eloquent;
 
 use App\Models\User;
 use App\Repositories\Contracts\UserRepositoryInterface;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
 
 class UserRepository implements UserRepositoryInterface
 {
@@ -15,21 +17,27 @@ class UserRepository implements UserRepositoryInterface
 
     public function all(array $data = [])
     {
-        $user = $this->model->query();
+        $perPage = $data['per_page'] ?? 10;
+        $cacheKey = generateUniqueCacheKey($data, $perPage);
 
-        if (!empty($data['role'])) {
-            $user->where('role', $data['role']);
-        }
+        return Cache::remember($cacheKey, now()->addMinutes(60), function () use ($data, $perPage, $cacheKey) {
+            Log::info('DB query executed for cache key: ' . $cacheKey);
 
-        if (!empty($data['search'])) {
-            $user->where(function ($query) use ($data) {
-                $query->where('name', 'like', '%' . $data['search'] . '%')
-                    ->orWhere('email', 'like', '%' . $data['search'] . '%');
-            });
-        }
+            $query = $this->model->newQuery();
 
-        return $user->orderBy('id', 'DESC')
-            ->paginate($data['per_page'] ?? 10);
+            if (!empty($data['role'])) {
+                $query->where('role', $data['role']);
+            }
+
+            if (!empty($data['search'])) {
+                $query->where(function ($q) use ($data) {
+                    $q->where('name', 'like', '%' . $data['search'] . '%')
+                        ->orWhere('email', 'like', '%' . $data['search'] . '%');
+                });
+            }
+
+            return $query->orderBy('id', 'desc')->paginate($perPage);
+        });
     }
 
     public function find($id)
