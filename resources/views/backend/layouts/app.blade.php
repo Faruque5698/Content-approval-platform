@@ -22,10 +22,11 @@
 
         @include('backend.partials.footer')
 
-        @include('backend.partials.scripts')
-
     </div>
 </div>
+
+@include('backend.partials.scripts')
+{!! Toastr::message() !!}
 
 </body>
 </html>

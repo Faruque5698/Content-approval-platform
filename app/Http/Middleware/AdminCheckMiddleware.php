@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use Brian2694\Toastr\Facades\Toastr;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -21,6 +22,7 @@ class AdminCheckMiddleware
         if (!$user || $user->role != 'admin') {
             {
                 Auth::logout();
+                Toastr::warning('You are not admin', 'Warning', ["positionClass" => "toast-top-right"]);
                 return redirect('/');
             }
         }
