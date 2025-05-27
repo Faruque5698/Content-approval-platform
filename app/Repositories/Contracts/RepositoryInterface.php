@@ -4,10 +4,14 @@ namespace App\Repositories\Contracts;
 
 interface RepositoryInterface
 {
-     /**
+    /**
+     * Retrieve all records.
+     *
+     * @param array $data
      * @return mixed
      */
-    public function all();
+
+    public function all(array $data = []);
 
     /**
      * @param int|string $id
