@@ -9,7 +9,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-
 Route::group(['middleware' => ['auth','isAdmin']], function () {
     Route::get('/dashboard',[DashboardController::class, 'index'] )->name('dashboard');
 

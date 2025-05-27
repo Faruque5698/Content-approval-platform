@@ -2,6 +2,7 @@
 
 namespace App\Repositories\Eloquent;
 
+use App\Helpers\Classes\CacheHelper;
 use App\Models\User;
 use App\Repositories\Contracts\UserRepositoryInterface;
 use Illuminate\Support\Facades\Cache;
@@ -18,7 +19,7 @@ class UserRepository implements UserRepositoryInterface
     public function all(array $data = [])
     {
         $perPage = $data['per_page'] ?? 10;
-        $cacheKey = generateUniqueCacheKey($data, $perPage);
+        $cacheKey = CacheHelper::generateCacheKey($this->model, $data, $perPage);
 
         return Cache::remember($cacheKey, now()->addMinutes(60), function () use ($data, $perPage, $cacheKey) {
             Log::info('DB query executed for cache key: ' . $cacheKey);
