@@ -2,9 +2,11 @@
 
 namespace Database\Seeders;
 
+use App\Helpers\Classes\CacheHelper;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Cache;
 
 class DatabaseSeeder extends Seeder
 {
@@ -13,10 +15,10 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-//        $this->call([
-//            UserSeeder::class,
-//        ]);
-        User::factory(10)->create();
-        invalidateCache(User::class);
+        $this->call([
+            UserSeeder::class,
+        ]);
+        User::factory(100)->create();
+        Cache::flush();
     }
 }

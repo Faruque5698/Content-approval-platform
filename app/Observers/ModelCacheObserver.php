@@ -2,23 +2,23 @@
 
 namespace App\Observers;
 
-use Illuminate\Support\Facades\Cache;
+use App\Helpers\Classes\CacheHelper;
 
 class ModelCacheObserver
 {
     public function created($model)
     {
-        invalidateCache($model);
+        CacheHelper::incrementVersion(get_class($model));
     }
 
     public function updated($model)
     {
-        invalidateCache($model);
+        CacheHelper::incrementVersion(get_class($model));
     }
 
     public function deleted($model)
     {
-        invalidateCache($model);
+        CacheHelper::incrementVersion(get_class($model));
     }
 
 }

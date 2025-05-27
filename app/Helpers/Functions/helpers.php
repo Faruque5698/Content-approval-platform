@@ -10,10 +10,15 @@ if ( !function_exists('generateUniqueCacheKey') ){
     }
 }
 
+
 if ( !function_exists('invalidateCache') ){
     function invalidateCache($model)
     {
-        $cacheKey = strtolower(class_basename($model)) . '_cache_version';
+        $modelClass = is_string($model) ? $model : get_class($model);
+
+        $baseName = strtolower(class_basename($modelClass));
+
+        $cacheKey = $baseName . '_cache_version';
 
         Cache::increment($cacheKey);
     }
