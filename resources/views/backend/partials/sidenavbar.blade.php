@@ -26,8 +26,8 @@
                 </a>
                 <div class="collapse" id="collapseLayouts_post" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                     <nav class="sb-sidenav-menu-nested nav">
-                        <a class="nav-link" href="">List</a>
-                        <a class="nav-link" href="">Add</a>
+                        <a class="nav-link" href="{{route('posts.index')}}">List</a>
+                        <a class="nav-link" href="{{route('posts.create')}}">Add</a>
                     </nav>
                 </div>
 

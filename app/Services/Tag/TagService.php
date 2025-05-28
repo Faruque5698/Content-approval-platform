@@ -5,7 +5,7 @@ namespace App\Services\Tag;
 use App\Repositories\Contracts\TagRepositoryInterface;
 use Illuminate\Foundation\Http\FormRequest;
 
-class TagService
+class TagService implements TagServiceInterface
 {
     protected $repository;
 
@@ -38,5 +38,10 @@ class TagService
     public function delete($id)
     {
         return $this->repository->delete($id);
+    }
+
+    public function getTagDropdownData()
+    {
+        return $this->repository->getTagDropdownData();
     }
 }

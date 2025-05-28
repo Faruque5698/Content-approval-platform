@@ -2,15 +2,15 @@
 
 namespace App\Repositories\Eloquent;
 
-use App\Models\Tag;
-use App\Repositories\Contracts\TagRepositoryInterface;
+use App\Models\Post;
+use App\Repositories\Contracts\PostRepositoryInterface;
 
 
-class TagRepository implements TagRepositoryInterface
+class PostRepository implements PostRepositoryInterface
 {
     protected $model;
 
-    public function __construct(Tag $model)
+    public function __construct(Post $model)
     {
         $this->model = $model;
     }
@@ -38,27 +38,36 @@ class TagRepository implements TagRepositoryInterface
 
     public function create(array $data)
     {
-        $tag = $this->model->create($data);
-        return $tag;
+        $post = $this->model->create($data);
+        return $post;
     }
 
     public function update(array $data, $id)
     {
-        $tag = $this->model->findOrFail($id);
-        $tag->update($data);
-        return $tag;
+        $post = $this->model->findOrFail($id);
+        $post->update($data);
+        return $post;
     }
 
     public function delete($id)
     {
-        $tag = $this->model->findOrFail($id);
-        $tag->delete();
+        $post = $this->model->findOrFail($id);
+        $post->delete();
         return true;
     }
 
-    public function getTagDropdownData()
+    public function categoryAdd($data, $id)
     {
-        return $this->model->select('id', 'name')->orderBy('name','ASC')->get();
+        $post = $this->model->findOrFail($id);
+        return $post->categories()->sync($data);
     }
+
+    public function tagAdd($data, $id)
+    {
+        $post = $this->model->findOrFail($id);
+        return $post->tags()->sync($data);
+    }
+
+
 
 }

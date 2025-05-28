@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Tag\TagRequest;
-use App\Services\Tag\TagService;
+use App\Services\Tag\TagServiceInterface;
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Log;
 class TagController extends Controller
 {
     protected $service;
-    public function __construct(TagService $service)
+    public function __construct(TagServiceInterface $service)
     {
         $this->service = $service;
     }

@@ -5,7 +5,7 @@ namespace App\Services\Category;
 use App\Repositories\Contracts\CategoryRepositoryInterface;
 use Illuminate\Foundation\Http\FormRequest;
 
-class CategoryService
+class CategoryService implements CategoryServiceInterface
 {
     protected $repository;
 
@@ -38,5 +38,10 @@ class CategoryService
     public function delete($id)
     {
         return $this->repository->delete($id);
+    }
+
+    public function getCategoryDropdownData()
+    {
+        return $this->repository->getCategoryDropdownData();
     }
 }

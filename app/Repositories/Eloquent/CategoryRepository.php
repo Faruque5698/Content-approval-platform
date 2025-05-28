@@ -56,4 +56,10 @@ class CategoryRepository implements CategoryRepositoryInterface
         return true;
     }
 
+    public function getCategoryDropdownData()
+    {
+        return $this->model->select('id', 'name')->orderBy('name','ASC')->get();
+
+    }
+
 }

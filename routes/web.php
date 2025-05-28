@@ -6,21 +6,28 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\TagController;
+use App\Http\Controllers\Admin\PostController;
 
 Route::get('/', function () {
     return view('welcome');
 });
 
-Route::group(['middleware' => ['auth','isAdmin']], function () {
-    Route::get('/dashboard',[DashboardController::class, 'index'] )->name('dashboard');
+Route::group(['middleware' => ['auth']], function () {
+    Route::group(['middleware' => 'isAdmin'], function (){
+        Route::get('/dashboard',[DashboardController::class, 'index'] )->name('dashboard');
 
-    Route::group(['prefix' => 'admin','as' => 'admin.'], function () {
-        Route::resource('users',UserController::class);
+        Route::group(['prefix' => 'admin','as' => 'admin.'], function () {
+            Route::resource('users',UserController::class);
 
-        Route::resource('categories', CategoryController::class)->except(['show']);
+            Route::resource('categories', CategoryController::class)->except(['show']);
 
-        Route::resource('tags', TagController::class)->except(['show']);
+            Route::resource('tags', TagController::class)->except(['show']);
+
+        });
     });
+
+    Route::resource('posts',PostController::class);
+
 
 });
 

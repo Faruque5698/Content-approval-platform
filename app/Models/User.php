@@ -48,4 +48,14 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    /**
+     * The attributes that should be appended to the model's array form.
+     *
+     * @var list<string>
+     */
+    public function posts()
+    {
+        return $this->hasMany(Post::class);
+    }
 }
