@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\CategoryController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -14,6 +15,8 @@ Route::group(['middleware' => ['auth','isAdmin']], function () {
 
     Route::group(['prefix' => 'admin','as' => 'admin.'], function () {
         Route::resource('users',UserController::class);
+
+        Route::resource('categories', CategoryController::class)->except(['show']);
     });
 
 });

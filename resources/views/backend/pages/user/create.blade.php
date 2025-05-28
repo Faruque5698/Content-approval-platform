@@ -17,7 +17,7 @@
                 <div class="card-body">
                     <form action="{{ route('admin.users.update', $user->id) }}" method="POST">
                         @csrf
-                        @method('PUT') {{-- For PUT request --}}
+                        @method('PUT')
 
                         <div class="mb-3">
                             <label for="name" class="form-label">Name <span class="text-danger">*</span></label>
@@ -72,7 +72,6 @@
                             @enderror
                         </div>
 
-                        {{-- Password fields optional for edit. You can choose to leave them blank if no change --}}
                         <div class="mb-3">
                             <label for="password" class="form-label">Password (Leave blank to keep current)</label>
                             <input
