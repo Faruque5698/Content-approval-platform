@@ -15,7 +15,7 @@
                     Edit User Details
                 </div>
                 <div class="card-body">
-                    <form action="{{ route('admin.users.update', ['user' => $user->id]) }}" method="POST">
+                    <form action="{{ route('admin.users.update', $user) }}" method="POST">
                         @csrf
                         @method('PUT')
 
