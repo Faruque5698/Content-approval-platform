@@ -43,26 +43,27 @@ class UserRepository implements UserRepositoryInterface
 
     public function find($id)
     {
-
+        return $this->model->findOrFail($id);
     }
 
     public function create(array $data)
     {
-
+        $user = $this->model->create($data);
+        return $user;
     }
 
-    public function update($id, array $data)
+    public function update(array $data, $id)
     {
-
+        $user = $this->model->findOrFail($id);
+        $user->update($data);
+        return $user;
     }
 
     public function delete($id)
     {
-
+        $user = $this->model->findOrFail($id);
+        $user->delete();
+        return true;
     }
 
-    public function getByRole($role)
-    {
-
-    }
 }

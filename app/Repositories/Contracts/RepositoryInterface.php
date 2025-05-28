@@ -26,11 +26,11 @@ interface RepositoryInterface
     public function create(array $data);
 
     /**
-     * @param int|string $id
      * @param array $data
+     * @param int|string $id
      * @return mixed
      */
-    public function update($id, array $data);
+    public function update(array $data, $id);
 
     /**
      * @param int|string $id

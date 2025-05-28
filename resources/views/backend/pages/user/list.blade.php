@@ -10,12 +10,15 @@
 
             <div class="card mb-4">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <div>
+                    <div class="d-flex align-items-center">
                         <i class="fas fa-users me-1"></i>
-                        All Users
+                        <strong>All Users</strong>
                     </div>
-                    <form action="{{ route('admin.users.index') }}" method="GET" class="d-flex gap-2">
-                        <input type="text" name="search" value="{{ request('search') }}" class="form-control" placeholder="Search name/email">
+
+                    <form action="{{ route('admin.users.index') }}" method="GET"
+                          class="d-flex gap-2 align-items-center">
+                        <input type="text" name="search" value="{{ request('search') }}" class="form-control"
+                               placeholder="Search name/email">
 
                         <select name="role" class="form-select">
                             <option value="">All Roles</option>
@@ -24,10 +27,14 @@
                         </select>
 
                         <button type="submit" class="btn btn-primary">Filter</button>
-
                         <a href="{{ route('admin.users.index') }}" class="btn btn-secondary">Reset</a>
                     </form>
+
+                    <a href="{{ route('admin.users.create') }}" class="btn btn-success btn-sm">
+                        <i class="fas fa-plus"></i> Add User
+                    </a>
                 </div>
+
 
                 <div class="card-body">
                     <table class="table table-bordered table-striped table-hover">
@@ -54,9 +61,18 @@
                                 </td>
                                 <td>{{ $user->created_at->format('d M, Y') }}</td>
                                 <td>
-                                    <a href="#" class="btn btn-sm btn-info">View</a>
-                                    <a href="#" class="btn btn-sm btn-warning">Edit</a>
-                                    <a href="#" class="btn btn-sm btn-danger">Delete</a>
+                                    <a href="{{route('admin.users.show',$user)}}" class="btn btn-sm btn-info">View</a>
+                                    <a href="{{route('admin.users.edit',$user)}}"
+                                       class="btn btn-sm btn-warning">Edit</a>
+                                    <form action="{{ route('admin.users.destroy', $user) }}" method="POST"
+                                          style="display:inline;">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-sm btn-danger"
+                                                onclick="return confirm('Are you sure you want to delete this user?')">
+                                            Delete
+                                        </button>
+                                    </form>
                                 </td>
                             </tr>
                         @empty
@@ -75,3 +91,7 @@
         </div>
     </main>
 @endsection
+
+@push('scripts')
+    <script src="{{asset('assets/backend')}}/js/datatables-simple-demo.js"></script>
+@endpush
