@@ -25,8 +25,8 @@ trait PostTrait
             $data['updated_at'] = now();
         }
 
-        unset($data['categories'],$data['tags']);
-
+        unset($data['categories'],$data['tags'], $data['image']);
+        dd($data);
         return $data;
     }
 }

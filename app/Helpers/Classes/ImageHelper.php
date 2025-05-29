@@ -47,15 +47,14 @@ class ImageHelper
      * @param string $folder
      * @return string
      */
-    public static function uploadThumbnail(UploadedFile $file, string $folder = 'uploads')
+    public static function uploadThumbnail(UploadedFile $file, string $folder = 'uploads/thumbnails')
     {
         self::ensureStorageSymlink();
 
         $fileName = 'thumb_' . Str::uuid() . '.' . $file->getClientOriginalExtension();
         $path = $folder . '/' . $fileName;
 
-        // Create ImageManager instance with Imagick driver (use GDDriver::class for GD)
-        $manager = new ImageManager('imagick'); // driver as string
+        $manager = new ImageManager('imagick');
 
         $image = $manager->make($file)->fit(300, 200);
 

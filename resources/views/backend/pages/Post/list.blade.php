@@ -60,8 +60,9 @@
                                 </td>
                                 <td>{{ $post->created_at->format('d M, Y') }}</td>
                                 <td>
-                                    <a href="{{ route('admin.posts.edit', $post) }}" class="btn btn-sm btn-warning">Edit</a>
-                                    <form action="{{ route('admin.posts.destroy', $post) }}" method="POST"
+                                    <a href="{{route('posts.show',$post)}}" class="btn btn-sm btn-info">View</a>
+                                    <a href="{{ route('posts.edit', $post) }}" class="btn btn-sm btn-warning">Edit</a>
+                                    <form action="{{ route('posts.destroy', $post) }}" method="POST"
                                           style="display:inline;">
                                         @csrf
                                         @method('DELETE')

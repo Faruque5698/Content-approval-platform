@@ -82,7 +82,7 @@
                                 multiple
                             >
                                 @foreach($tags as $tag)
-                                    <option value="{{ $tag->id }}" selected>{{ $tag->name }}</option>
+                                    <option value="{{ $tag->id }}" >{{ $tag->name }}</option>
                                 @endforeach
                             </select>
                             @error('tags')
