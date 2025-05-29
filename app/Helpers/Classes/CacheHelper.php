@@ -55,6 +55,9 @@ class CacheHelper
         $version = self::getVersion($model);
         $perPagePart = $perPage ? "_perPage_{$perPage}" : '';
 
-        return "{$baseName}:" . md5(json_encode($params) . $perPagePart) . "_v{$version}";
+        $user = auth()->user();
+        $userKeyPart = $user ? "_user_{$user->id}" : '_guest';
+
+        return "{$baseName}:" . md5(json_encode($params) . $perPagePart . $userKeyPart) . "_v{$version}";
     }
 }

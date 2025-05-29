@@ -21,4 +21,14 @@ class ModelCacheObserver
         CacheHelper::incrementVersion(get_class($model));
     }
 
+    public function restored($model)
+    {
+        CacheHelper::incrementVersion(get_class($model));
+    }
+
+    public function forceDeleted($model)
+    {
+        CacheHelper::incrementVersion(get_class($model));
+    }
+
 }

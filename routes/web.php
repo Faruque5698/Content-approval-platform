@@ -13,17 +13,15 @@ Route::get('/', function () {
 });
 
 Route::group(['middleware' => ['auth']], function () {
-    Route::group(['middleware' => 'isAdmin'], function (){
-        Route::get('/dashboard',[DashboardController::class, 'index'] )->name('dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-        Route::group(['prefix' => 'admin','as' => 'admin.'], function () {
-            Route::resource('users',UserController::class);
+    Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
+        Route::resource('users', UserController::class);
 
-            Route::resource('categories', CategoryController::class)->except(['show']);
+        Route::resource('categories', CategoryController::class)->except(['show']);
 
-            Route::resource('tags', TagController::class)->except(['show']);
+        Route::resource('tags', TagController::class)->except(['show']);
 
-        });
     });
 
     Route::group(['prefix' => 'posts', 'as' => 'posts.'], function () {
@@ -47,4 +45,4 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

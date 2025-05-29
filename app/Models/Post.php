@@ -36,4 +36,15 @@ class Post extends Model
     {
         return $query->whereNull('archived_at');
     }
+
+    public function scopeVisibleTo($query, User $user)
+    {
+        if ($user && $user->isAdmin()) {
+            return $query;
+        } elseif ($user) {
+            return $query->where('user_id', $user->id);
+        } else {
+            return $query->where('status', 'published');
+        }
+    }
 }
