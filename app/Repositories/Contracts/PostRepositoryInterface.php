@@ -24,4 +24,6 @@ interface PostRepositoryInterface extends RepositoryInterface
     public function findOnlyTrashed($id);
 
     public function updateStatus($id, $status);
+
+    public function archiveOldPendingPosts(): int;
 }

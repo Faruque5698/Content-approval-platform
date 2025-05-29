@@ -5,6 +5,7 @@ namespace App\Repositories\Eloquent;
 use App\Helpers\Classes\CacheHelper;
 use App\Models\Post;
 use App\Repositories\Contracts\PostRepositoryInterface;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 
@@ -144,5 +145,14 @@ class PostRepository implements PostRepositoryInterface
         $post->status = $status;
         $post->save();
         return $post;
+    }
+
+    public function archiveOldPendingPosts(): int
+    {
+        $thresholdDate = Carbon::now()->subDays(3);
+
+        return $this->model->where('status', 'pending')
+            ->where('created_at', '<=', $thresholdDate)
+            ->update(['archived_at' => now()]);
     }
 }
