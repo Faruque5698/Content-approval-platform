@@ -46,3 +46,9 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__ . '/auth.php';
+Route::get('/test-mail', function() {
+    \Illuminate\Support\Facades\Mail::raw('Test email content', function($message) {
+        $message->to('your-email@example.com')->subject('Test Email');
+    });
+    return 'Mail sent (or failed)';
+});

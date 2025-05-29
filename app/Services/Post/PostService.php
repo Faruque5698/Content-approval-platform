@@ -3,6 +3,7 @@
 namespace App\Services\Post;
 
 use App\Helpers\Classes\ImageHelper;
+use App\Jobs\SendPostStatusEmail;
 use App\Repositories\Contracts\PostRepositoryInterface;
 use App\Traits\Post\PostTrait;
 use Illuminate\Foundation\Http\FormRequest;
@@ -118,6 +119,9 @@ class PostService implements PostServiceInterface
     public function updateStatus($id, $status)
     {
         $post = $this->repository->updateStatus($id, $status);
+        if ($status != 'pending'){
+            SendPostStatusEmail::dispatch($post->user, $post);
+        }
         return $post;
     }
 
