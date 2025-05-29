@@ -42,7 +42,7 @@ class TagController extends Controller
         try {
             $this->service->storeTag($request);
             Toastr::success('Tag created successfully', 'Success', ["positionClass" => "toast-top-right"]);
-            return redirect()->route('admin.tags.index');
+            return redirect()->route('tags.index');
         } catch (\Exception $e) {
             Log::error('Tag creation failed', ['error' => $e->getMessage(), 'line' => $e->getLine(), 'file' => $e->getFile()]);
             Toastr::error('Something went wrong!', 'Error', ["positionClass" => "toast-top-right"]);
@@ -67,7 +67,7 @@ class TagController extends Controller
         try {
             $this->service->updateTag($request, $id);
             Toastr::success('Tag updated successfully', 'Success', ["positionClass" => "toast-top-right"]);
-            return redirect()->route('admin.tags.index');
+            return redirect()->route('tags.index');
         } catch (\Exception $e) {
             Log::error('Tag update failed', ['error' => $e->getMessage(), 'line' => $e->getLine(), 'file' => $e->getFile()]);
             Toastr::error('Something went wrong!', 'Error', ["positionClass" => "toast-top-right"]);
@@ -83,7 +83,7 @@ class TagController extends Controller
         try {
             $this->service->delete($id);
             Toastr::success('Tag deleted successfully', 'Success', ["positionClass" => "toast-top-right"]);
-            return redirect()->route('admin.tags.index');
+            return redirect()->route('tags.index');
 
         }catch (\Exception $e) {
             Log::error('Tag deletion failed', ['error' => $e->getMessage(), 'line' => $e->getLine(), 'file' => $e->getFile()]);

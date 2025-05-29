@@ -5,7 +5,7 @@
         <div class="container-fluid px-4">
             <h1 class="mt-4">Create Tag</h1>
             <ol class="breadcrumb mb-4">
-                <li class="breadcrumb-item"><a href="{{ route('admin.tags.index') }}">Tag List</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('tags.index') }}">Tag List</a></li>
                 <li class="breadcrumb-item active">Create Tag</li>
             </ol>
 
@@ -15,7 +15,7 @@
                     Add New Tag
                 </div>
                 <div class="card-body">
-                    <form action="{{ route('admin.tags.store') }}" method="POST">
+                    <form action="{{ route('tags.store') }}" method="POST">
                         @csrf
 
                         <div class="mb-3">

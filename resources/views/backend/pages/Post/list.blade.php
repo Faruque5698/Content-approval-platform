@@ -48,24 +48,37 @@
                                 <td>{{ $post->title }}</td>
                                 <td>{{ $post->user->name ?? 'N/A' }}</td>
                                 <td>
-                                    <form action="{{ route('posts.updateStatus', $post->id) }}" method="POST" class="mb-0">
-                                        @csrf
-                                        @method('PUT')
-                                        <div class="input-group input-group-sm">
-                                            <select name="status" class="form-select border-0 bg-light rounded-pill py-1 px-2"
-                                                    style="min-width: 120px;" onchange="this.form.submit()">
-                                                <option value="approved" {{ $post->status == 'approved' ? 'selected' : '' }}>
-                                                    ✅ Approved
-                                                </option>
-                                                <option value="pending" {{ $post->status == 'pending' ? 'selected' : '' }}>
-                                                    ⏳ Pending
-                                                </option>
-                                                <option value="rejected" {{ $post->status == 'rejected' ? 'selected' : '' }}>
-                                                    ❌ Rejected
-                                                </option>
-                                            </select>
-                                        </div>
-                                    </form>
+                                    @if(auth()->check() && auth()->user()->isAdmin())
+                                        <form action="{{ route('posts.updateStatus', $post->id) }}" method="POST" class="mb-0">
+                                            @csrf
+                                            @method('PUT')
+                                            <div class="input-group input-group-sm">
+                                                <select name="status" class="form-select border-0 bg-light rounded-pill py-1 px-2"
+                                                        style="min-width: 120px;" onchange="this.form.submit()">
+                                                    <option value="approved" {{ $post->status == 'approved' ? 'selected' : '' }}>
+                                                        ✅ Approved
+                                                    </option>
+                                                    <option value="pending" {{ $post->status == 'pending' ? 'selected' : '' }}>
+                                                        ⏳ Pending
+                                                    </option>
+                                                    <option value="rejected" {{ $post->status == 'rejected' ? 'selected' : '' }}>
+                                                        ❌ Rejected
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </form>
+                                    @else
+                                        @if($post->status == 'approved')
+                                            ✅ Approved
+                                        @elseif($post->status == 'pending')
+                                            ⏳ Pending
+                                        @elseif($post->status == 'rejected')
+                                            ❌ Rejected
+                                        @else
+                                            {{ ucfirst($post->status) }}
+                                        @endif
+                                    @endif
+
                                 </td>
                                 <td>{{ $post->created_at->format('d M, Y') }}</td>
                                 <td>
@@ -80,6 +93,8 @@
                                             Delete
                                         </button>
                                     </form>
+                                    @if(auth()->check() && auth()->user()->isAdmin())
+
                                     <form action="{{ route('posts.archiveCreate', $post) }}" method="POST" style="display:inline;">
                                         @csrf
                                         @method('PUT')
@@ -88,6 +103,7 @@
                                             Archive
                                         </button>
                                     </form>
+                                    @endif
                                 </td>
 
                             </tr>

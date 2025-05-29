@@ -42,7 +42,7 @@ class CategoryController extends Controller
         try {
             $this->service->storeCategory($request);
             Toastr::success('Category created successfully', 'Success', ["positionClass" => "toast-top-right"]);
-            return redirect()->route('admin.categories.index');
+            return redirect()->route('categories.index');
         } catch (\Exception $e) {
             Log::error('Category creation failed', ['error' => $e->getMessage(), 'line' => $e->getLine(), 'file' => $e->getFile()]);
             Toastr::error('Something went wrong!', 'Error', ["positionClass" => "toast-top-right"]);
@@ -67,7 +67,7 @@ class CategoryController extends Controller
         try {
             $this->service->updateCategory($request, $id);
             Toastr::success('Category updated successfully', 'Success', ["positionClass" => "toast-top-right"]);
-            return redirect()->route('admin.categories.index');
+            return redirect()->route('categories.index');
         } catch (\Exception $e) {
             Log::error('Category update failed', ['error' => $e->getMessage(), 'line' => $e->getLine(), 'file' => $e->getFile()]);
             Toastr::error('Something went wrong!', 'Error', ["positionClass" => "toast-top-right"]);
@@ -83,7 +83,7 @@ class CategoryController extends Controller
         try {
             $this->service->delete($id);
             Toastr::success('Category deleted successfully', 'Success', ["positionClass" => "toast-top-right"]);
-            return redirect()->route('admin.categories.index');
+            return redirect()->route('categories.index');
 
         }catch (\Exception $e) {
             Log::error('Category deletion failed', ['error' => $e->getMessage(), 'line' => $e->getLine(), 'file' => $e->getFile()]);

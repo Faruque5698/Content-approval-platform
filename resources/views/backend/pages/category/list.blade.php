@@ -15,16 +15,16 @@
                         <strong>All Categories</strong>
                     </div>
 
-                    <form action="{{ route('admin.categories.index') }}" method="GET"
+                    <form action="{{ route('categories.index') }}" method="GET"
                           class="d-flex gap-2 align-items-center">
                         <input type="text" name="search" value="{{ request('search') }}" class="form-control"
                                placeholder="Search category name">
 
                         <button type="submit" class="btn btn-primary">Filter</button>
-                        <a href="{{ route('admin.categories.index') }}" class="btn btn-secondary">Reset</a>
+                        <a href="{{ route('categories.index') }}" class="btn btn-secondary">Reset</a>
                     </form>
 
-                    <a href="{{ route('admin.categories.create') }}" class="btn btn-success btn-sm">
+                    <a href="{{ route('categories.create') }}" class="btn btn-success btn-sm">
                         <i class="fas fa-plus"></i> Add Category
                     </a>
                 </div>
@@ -46,8 +46,8 @@
                                 <td>{{ $category->name }}</td>
                                 <td>{{ $category->created_at->format('d M, Y') }}</td>
                                 <td>
-                                    <a href="{{ route('admin.categories.edit', $category) }}" class="btn btn-sm btn-warning">Edit</a>
-                                    <form action="{{ route('admin.categories.destroy', $category) }}" method="POST"
+                                    <a href="{{ route('categories.edit', $category) }}" class="btn btn-sm btn-warning">Edit</a>
+                                    <form action="{{ route('categories.destroy', $category) }}" method="POST"
                                           style="display:inline;">
                                         @csrf
                                         @method('DELETE')

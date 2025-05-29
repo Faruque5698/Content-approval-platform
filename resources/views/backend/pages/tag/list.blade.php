@@ -15,16 +15,16 @@
                         <strong>All Tags</strong>
                     </div>
 
-                    <form action="{{ route('admin.tags.index') }}" method="GET"
+                    <form action="{{ route('tags.index') }}" method="GET"
                           class="d-flex gap-2 align-items-center">
                         <input type="text" name="search" value="{{ request('search') }}" class="form-control"
                                placeholder="Search tag name">
 
                         <button type="submit" class="btn btn-primary">Filter</button>
-                        <a href="{{ route('admin.tags.index') }}" class="btn btn-secondary">Reset</a>
+                        <a href="{{ route('tags.index') }}" class="btn btn-secondary">Reset</a>
                     </form>
 
-                    <a href="{{ route('admin.tags.create') }}" class="btn btn-success btn-sm">
+                    <a href="{{ route('tags.create') }}" class="btn btn-success btn-sm">
                         <i class="fas fa-plus"></i> Add Tag
                     </a>
                 </div>
@@ -46,8 +46,8 @@
                                 <td>{{ $tag->name }}</td>
                                 <td>{{ $tag->created_at->format('d M, Y') }}</td>
                                 <td>
-                                    <a href="{{ route('admin.tags.edit', $tag) }}" class="btn btn-sm btn-warning">Edit</a>
-                                    <form action="{{ route('admin.tags.destroy', $tag) }}" method="POST"
+                                    <a href="{{ route('tags.edit', $tag) }}" class="btn btn-sm btn-warning">Edit</a>
+                                    <form action="{{ route('tags.destroy', $tag) }}" method="POST"
                                           style="display:inline;">
                                         @csrf
                                         @method('DELETE')

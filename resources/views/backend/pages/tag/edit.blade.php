@@ -5,7 +5,7 @@
         <div class="container-fluid px-4">
             <h1 class="mt-4">Edit Tag</h1>
             <ol class="breadcrumb mb-4">
-                <li class="breadcrumb-item"><a href="{{ route('admin.tags.index') }}">Tag List</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('tags.index') }}">Tag List</a></li>
                 <li class="breadcrumb-item active">Edit Tag</li>
             </ol>
 
@@ -15,7 +15,7 @@
                     Edit Tag Details
                 </div>
                 <div class="card-body">
-                    <form action="{{ route('admin.tags.update',  $tag) }}" method="POST">
+                    <form action="{{ route('tags.update',  $tag) }}" method="POST">
                         @csrf
                         @method('PUT')
 

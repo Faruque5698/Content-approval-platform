@@ -5,7 +5,7 @@
         <div class="container-fluid px-4">
             <h1 class="mt-4">Edit Category</h1>
             <ol class="breadcrumb mb-4">
-                <li class="breadcrumb-item"><a href="{{ route('admin.categories.index') }}">Category List</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('categories.index') }}">Category List</a></li>
                 <li class="breadcrumb-item active">Edit Category</li>
             </ol>
 
@@ -15,7 +15,7 @@
                     Edit Category Details
                 </div>
                 <div class="card-body">
-                    <form action="{{ route('admin.categories.update',$category) }}" method="POST">
+                    <form action="{{ route('categories.update',$category) }}" method="POST">
                         @csrf
                         @method('PUT')
 
