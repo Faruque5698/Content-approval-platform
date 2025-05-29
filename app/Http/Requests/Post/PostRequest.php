@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests\Post;
 
-use App\Models\Category;
+use App\Models\Post;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -23,7 +23,11 @@ class PostRequest extends FormRequest
      */
     public function rules(): array
     {
-        $postId = $this->route('post')?->id;
+        $post = $this->route('post');
+
+        if (is_string($post) || is_int($post)) {
+            $post = Post::find($post);
+        }
 
         return [
             'title' => ['required', 'string', 'max:255'],
@@ -31,7 +35,7 @@ class PostRequest extends FormRequest
                 'nullable',
                 'string',
                 'max:255',
-                Rule::unique('posts', 'slug')->ignore($postId),
+                Rule::unique(Post::class)->ignore($post?->id),
             ],
             'content' => ['required', 'string'],
             'image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],

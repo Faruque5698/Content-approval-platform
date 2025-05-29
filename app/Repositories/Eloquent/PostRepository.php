@@ -2,8 +2,11 @@
 
 namespace App\Repositories\Eloquent;
 
+use App\Helpers\Classes\CacheHelper;
 use App\Models\Post;
 use App\Repositories\Contracts\PostRepositoryInterface;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
 
 
 class PostRepository implements PostRepositoryInterface
@@ -17,23 +20,30 @@ class PostRepository implements PostRepositoryInterface
 
     public function all(array $data = [])
     {
+
         $perPage = $data['per_page'] ?? 10;
+        $cacheKey = CacheHelper::generateCacheKey($this->model, $data, $perPage);
 
-        $query = $this->model->newQuery();
+        return Cache::remember($cacheKey, now()->addMinutes(60), function () use ($data, $perPage, $cacheKey) {
+            Log::info('DB query executed for cache key: ' . $cacheKey);
 
-        if (!empty($data['search'])) {
-            $query->where(function ($q) use ($data) {
-                $q->where('name', 'like', '%' . $data['search'] . '%');
-            });
-        }
+            $query = $this->model->notArchived();
 
-        return $query->orderBy('id', 'desc')->paginate($perPage);
+            if (!empty($data['search'])) {
+                $query->where(function ($q) use ($data) {
+                    $q->where('name', 'like', '%' . $data['search'] . '%');
+                });
+            }
+
+            return $query->orderBy('id', 'desc')->paginate($perPage);
+        });
+
 
     }
 
     public function find($id)
     {
-        return $this->model->findOrFail($id);
+        return $this->model->with(['user','tags','categories'])->findOrFail($id);
     }
 
     public function create(array $data)
@@ -68,6 +78,77 @@ class PostRepository implements PostRepositoryInterface
         return $post->tags()->sync($data);
     }
 
+    public function trashList(array $data = [])
+    {
+        $perPage = $data['per_page'] ?? 10;
 
+        $query = $this->model->onlyTrashed();
+
+        if (!empty($data['search'])) {
+            $query->where(function ($q) use ($data) {
+                $q->where('title', 'like', '%' . $data['search'] . '%');
+            });
+        }
+
+        return $query->orderBy('id', 'desc')->paginate($perPage);
+
+    }
+
+    public function trashRestore($id)
+    {
+        $post = $this->findOnlyTrashed($id);
+        return $post->restore();
+    }
+
+    public function forceDelete($id)
+    {
+        $post = $this->findOnlyTrashed($id);
+        return $post->forceDelete();
+    }
+
+
+    public function archivedList(array $data = [])
+    {
+        $perPage = $data['per_page'] ?? 10;
+
+        $query = $this->model->archived();
+
+        if (!empty($data['search'])) {
+            $query->where(function ($q) use ($data) {
+                $q->where('title', 'like', '%' . $data['search'] . '%');
+            });
+        }
+
+        return $query->orderBy('id', 'desc')->paginate($perPage);
+    }
+
+    public function archive($id)
+    {
+        $post = $this->model->findOrFail($id);
+        $post->archived_at = now();
+        $post->save();
+        return $post;
+    }
+
+    public function archiveRestore($id)
+    {
+        $post = $this->model->archived()->findOrFail($id);
+        $post->archived_at = null;
+        $post->save();
+        return $post;
+    }
+
+    public function findOnlyTrashed($id)
+    {
+        return $this->model->onlyTrashed()->findOrFail($id);
+    }
+
+    public function updateStatus($id, $status)
+    {
+        $post = $this->model->findOrFail($id);
+        $post->status = $status;
+        $post->save();
+        return $post;
+    }
 
 }

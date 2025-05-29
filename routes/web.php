@@ -26,7 +26,17 @@ Route::group(['middleware' => ['auth']], function () {
         });
     });
 
-    Route::resource('posts',PostController::class);
+    Route::group(['prefix' => 'posts', 'as' => 'posts.'], function () {
+        Route::get('trash', [PostController::class, 'trash'])->name('trash');
+        Route::put('restore/{id}', [PostController::class, 'restore'])->name('restore');
+        Route::delete('force-delete/{id}', [PostController::class, 'forceDelete'])->name('forceDelete');
+        Route::get('archive', [PostController::class, 'archiveList'])->name('archive');
+        Route::put('archive/{post}', [PostController::class, 'archive'])->name('archiveCreate');
+        Route::put('restore-archive/{id}', [PostController::class, 'restoreArchive'])->name('restoreArchive');
+        Route::put('update-status/{post}', [PostController::class, 'updateStatus'])->name('updateStatus');
+    });
+
+    Route::resource('posts', PostController::class);
 
 
 });

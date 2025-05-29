@@ -48,15 +48,24 @@
                                 <td>{{ $post->title }}</td>
                                 <td>{{ $post->user->name ?? 'N/A' }}</td>
                                 <td>
-                                    @if($post->status == 'approved')
-                                        <span class="badge bg-success">Approved</span>
-                                    @elseif($post->status == 'pending')
-                                        <span class="badge bg-warning text-dark">Pending</span>
-                                    @elseif($post->status == 'rejected')
-                                        <span class="badge bg-danger">Rejected</span>
-                                    @else
-                                        <span class="badge bg-secondary">{{ ucfirst($post->status) }}</span>
-                                    @endif
+                                    <form action="{{ route('posts.updateStatus', $post->id) }}" method="POST" class="mb-0">
+                                        @csrf
+                                        @method('PUT')
+                                        <div class="input-group input-group-sm">
+                                            <select name="status" class="form-select border-0 bg-light rounded-pill py-1 px-2"
+                                                    style="min-width: 120px;" onchange="this.form.submit()">
+                                                <option value="approved" {{ $post->status == 'approved' ? 'selected' : '' }}>
+                                                    ✅ Approved
+                                                </option>
+                                                <option value="pending" {{ $post->status == 'pending' ? 'selected' : '' }}>
+                                                    ⏳ Pending
+                                                </option>
+                                                <option value="rejected" {{ $post->status == 'rejected' ? 'selected' : '' }}>
+                                                    ❌ Rejected
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </form>
                                 </td>
                                 <td>{{ $post->created_at->format('d M, Y') }}</td>
                                 <td>
@@ -71,7 +80,16 @@
                                             Delete
                                         </button>
                                     </form>
+                                    <form action="{{ route('posts.archiveCreate', $post) }}" method="POST" style="display:inline;">
+                                        @csrf
+                                        @method('PUT')
+                                        <button type="submit" class="btn btn-sm btn-secondary"
+                                                onclick="return confirm('Are you sure you want to archive this post?')">
+                                            Archive
+                                        </button>
+                                    </form>
                                 </td>
+
                             </tr>
                         @empty
                             <tr>

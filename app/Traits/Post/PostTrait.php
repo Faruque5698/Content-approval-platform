@@ -3,6 +3,7 @@
 namespace App\Traits\Post;
 
 use App\Helpers\Classes\ImageHelper;
+use App\Models\Post;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Str;
 
@@ -12,11 +13,6 @@ trait PostTrait
     {
         $data = $request->validated();
 
-        if (isset($data['image'])) {
-            $data['image_path'] = ImageHelper::uploadOriginal($request->image);
-            $data['thumbnail_path'] = ImageHelper::uploadThumbnail($request->image);
-        }
-
         if ($method === 'create') {
             $data['user_id'] = auth()->id();
             $data['slug'] = Str::slug($data['title']);
@@ -25,8 +21,26 @@ trait PostTrait
             $data['updated_at'] = now();
         }
 
-        unset($data['categories'],$data['tags'], $data['image']);
-        dd($data);
+        unset($data['categories'],$data['tags']);
         return $data;
+    }
+
+    private function processImage($data, $id = null){
+        if (isset($data['image'])) {
+            if ($id) {
+                $post = Post::find($id);
+                if ($post && $post->image_path) {
+                    ImageHelper::deleteImage($post->image_path);
+                }
+                if ($post && $post->thumbnail_path) {
+                    ImageHelper::deleteImage($post->thumbnail_path);
+                }
+            }
+            $data['image_path'] = ImageHelper::uploadFile($data['image'], 'uploads');
+            $data['thumbnail_path'] = ImageHelper::uploadFile($data['image'],'uploads/thumbnails', 200, 300);
+        }
+        unset($data['image']);
+        return $data;
+
     }
 }

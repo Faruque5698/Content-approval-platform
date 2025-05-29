@@ -2,6 +2,18 @@
 @section('title','Create Post')
 @push('styles')
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/trix/1.3.1/trix.min.css">
+    <style>
+        trix-editor {
+            min-height: 300px;
+            overflow-y: auto;
+            background-color: #fff;
+            border: 1px solid #ced4da;
+            border-radius: 0.375rem;
+            padding: 10px;
+        }
+    </style>
+
 @endpush
 
 @section('content')
@@ -39,13 +51,9 @@
 
                         <div class="mb-3">
                             <label for="content" class="form-label">Content <span class="text-danger">*</span></label>
-                            <textarea
-                                name="content"
-                                id="content"
-                                rows="5"
-                                class="form-control @error('content') is-invalid @enderror"
-                                required
-                            >{{ old('content') }}</textarea>
+                            <input id="content" type="hidden" name="content" value="{{ old('content', $post->content ?? '') }}">
+
+                            <trix-editor input="content" class="@error('content') is-invalid @enderror"></trix-editor>
                             @error('content')
                             <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -74,11 +82,13 @@
                         </div>
 
                         <div class="mb-3">
-                            <label for="tags" class="form-label">Tags (type or select)</label>
+                            <label for="tags" class="form-label">Tags (type or select)</label><span
+                                class="text-danger">*</span></label>
                             <select
                                 name="tags[]"
                                 id="tags"
                                 class="form-select @error('tags') is-invalid @enderror"
+                                required
                                 multiple
                             >
                                 @foreach($tags as $tag)
@@ -91,10 +101,19 @@
                         </div>
                         <div class="mb-3">
                             <label for="image" class="form-label">Post Image</label>
+                            <div class="mb-2">
+                                <img
+                                    id ="previewImage"
+                                    src="{{asset('assets/backend/noimage.png')}}"
+                                    alt="Post Image"
+                                    class="img-fluid rounded shadow-sm"
+                                    style="max-height: 100px; object-fit: cover;"
+                                >
+                            </div>
                             <input
                                 type="file"
                                 name="image"
-                                id="image"
+                                id="imageInput"
                                 class="form-control @error('image') is-invalid @enderror"
                                 accept="image/*"
                             >
@@ -112,6 +131,7 @@
 @endsection
 @push('scripts')
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/trix/1.3.1/trix.min.js"></script>
     <script>
         $(document).ready(function () {
             $('#categories').select2({
@@ -125,5 +145,25 @@
                 placeholder: "Add tags"
             });
         });
+
+        document.getElementById('imageInput').addEventListener('change', function (event) {
+            const file = event.target.files[0];
+            const preview = document.getElementById('previewImage');
+
+            if (file && file.type.startsWith('image/')) {
+                const reader = new FileReader();
+
+                reader.onload = function (e) {
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                };
+
+                reader.readAsDataURL(file);
+            } else {
+                preview.src = '#';
+                preview.style.display = 'none';
+            }
+        });
+
     </script>
 @endpush

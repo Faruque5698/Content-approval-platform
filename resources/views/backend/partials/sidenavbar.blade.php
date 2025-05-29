@@ -28,6 +28,8 @@
                     <nav class="sb-sidenav-menu-nested nav">
                         <a class="nav-link" href="{{route('posts.index')}}">List</a>
                         <a class="nav-link" href="{{route('posts.create')}}">Add</a>
+                        <a class="nav-link" href="{{route('posts.trash')}}">Trash list</a>
+                        <a class="nav-link" href="{{route('posts.archive')}}">Archive list</a>
                     </nav>
                 </div>
 
