@@ -16,7 +16,7 @@ This Laravel 11 project is a content management platform where users submit post
     - User ↔ Posts (one-to-many)
     - Post ↔ Categories (many-to-many)
     - Post ↔ Tags (polymorphic)
-- Soft Deletes with optional restore
+- Soft Deletes with restore
 - Service Layer for post creation logic
 
 ---
@@ -29,6 +29,23 @@ This project uses **Redis** for caching key parts of the application to improve 
 - User list
 - Frontend post list on the home page
 
+## Code Structure Pattern: Controller → Service → Repository with Interfaces
+
+This project uses a layered architecture with interfaces to separate concerns and enable easier testing and flexibility.
+
+---
+
+### Layers Overview
+
+| Layer               | Responsibility                                        |
+|---------------------|-----------------------------------------------------|
+| **Controller**      | Handles HTTP requests and responses                  |
+| **Service Interface** | Declares service methods (business logic contract)  |
+| **Service**          | Implements business logic and calls repository       |
+| **Repository Interface** | Declares data access methods                        |
+| **Repository**       | Implements data access logic using Eloquent or query builder |
+
+---
 ## Models & Relationships
 
 
