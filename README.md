@@ -199,3 +199,26 @@ php artisan queue:work
 php artisan schedule:work
 ```
 
+---
+
+## Contribution
+
+Contributions, feedback, and improvements are highly appreciated. Feel free to fork the repository and submit pull requests.
+
+## Issues & Support
+
+For any issues, bugs, or feature requests, please open an issue in the repository.
+
+## License
+
+This project is licensed under the [MIT License](LICENSE).
+
+## Contact
+
+If you have questions or want to discuss, reach me at:  
+**Email:** ashaduzzaman5698@gmail.com  
+**GitHub:** [github.com/Faruque5698](https://github.com/Faruque5698)
+
+---
+
+Thank you for reviewing this project. I look forward to your feedback!
