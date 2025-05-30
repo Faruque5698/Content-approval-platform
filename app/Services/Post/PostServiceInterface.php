@@ -25,7 +25,8 @@ interface PostServiceInterface
     public function archivedList(array $data = []);
     public function archive($id);
     public function archiveRestore($id);
-
     public function updateStatus($id, $status);
+    public function getAllApprovedPosts($data);
+    public function getPostBySlug($slug);
 
 }

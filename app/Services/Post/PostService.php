@@ -125,4 +125,14 @@ class PostService implements PostServiceInterface
         return $post;
     }
 
+    public function getAllApprovedPosts($data)
+    {
+        return $this->repository->getAllApprovedPosts($data);
+    }
+
+    public function getPostBySlug($slug)
+    {
+        return $this->repository->getPostBySlug($slug);
+    }
+
 }

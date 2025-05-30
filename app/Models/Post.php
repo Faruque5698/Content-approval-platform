@@ -37,6 +37,11 @@ class Post extends Model
         return $query->whereNull('archived_at');
     }
 
+    public function scopeApproved($query)
+    {
+        return $query->where('status', 'approved');
+    }
+
     public function scopeVisibleTo($query, User $user)
     {
         if ($user && $user->isAdmin()) {

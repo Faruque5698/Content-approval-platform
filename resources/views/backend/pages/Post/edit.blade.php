@@ -3,15 +3,9 @@
 
 @push('styles')
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/trix/1.3.1/trix.min.css">
     <style>
-        trix-editor {
-            min-height: 300px;
-            overflow-y: auto;
-            background-color: #fff;
-            border: 1px solid #ced4da;
-            border-radius: 0.375rem;
-            padding: 10px;
+        .ck-editor__editable_inline {
+            min-height: 400px;
         }
     </style>
 @endpush
@@ -52,8 +46,11 @@
 
                         <div class="mb-3">
                             <label for="content" class="form-label">Content <span class="text-danger">*</span></label>
-                            <input id="content" type="hidden" name="content" value="{{ old('content', $post->content) }}">
-                            <trix-editor input="content" class="@error('content') is-invalid @enderror"></trix-editor>
+                            <textarea name="content" id="editorContent" class="form-control ck-editor__editable_inline @error('content') is-invalid @enderror" rows="10">
+                                {{ old('content', $post->content ?? '') }}
+                            </textarea>
+                            <div id="editor" class="@error('content') is-invalid @enderror"></div>
+
                             @error('content')
                             <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -137,9 +134,30 @@
 
 @push('scripts')
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/trix/1.3.1/trix.min.js"></script>
+    <script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
 
     <script>
+
+        ClassicEditor
+            .create(document.querySelector('#editorContent'))
+            .catch(error => {
+                console.error(error);
+            });
+
+
+        $(document).ready(function () {
+            $('#categories').select2({
+                placeholder: "Select categories",
+                allowClear: true
+            });
+
+            $('#tags').select2({
+                tags: true,
+                tokenSeparators: [','],
+                placeholder: "Add tags"
+            });
+        });
+
         $(document).ready(function () {
             $('#categories').select2({
                 placeholder: "Select categories",

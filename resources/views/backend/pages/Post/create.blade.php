@@ -2,18 +2,11 @@
 @section('title','Create Post')
 @push('styles')
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/trix/1.3.1/trix.min.css">
     <style>
-        trix-editor {
-            min-height: 300px;
-            overflow-y: auto;
-            background-color: #fff;
-            border: 1px solid #ced4da;
-            border-radius: 0.375rem;
-            padding: 10px;
+        .ck-editor__editable_inline {
+            min-height: 400px;
         }
     </style>
-
 @endpush
 
 @section('content')
@@ -51,9 +44,11 @@
 
                         <div class="mb-3">
                             <label for="content" class="form-label">Content <span class="text-danger">*</span></label>
-                            <input id="content" type="hidden" name="content" value="{{ old('content', $post->content ?? '') }}">
+                            <textarea id="editorContent" name="content" style="display:none;">
+                                    {{ old('content', $post->content ?? '') }}
+                            </textarea>
+                            <div id="editor" class="@error('content') is-invalid @enderror"></div>
 
-                            <trix-editor input="content" class="@error('content') is-invalid @enderror"></trix-editor>
                             @error('content')
                             <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -92,7 +87,7 @@
                                 multiple
                             >
                                 @foreach($tags as $tag)
-                                    <option value="{{ $tag->id }}" >{{ $tag->name }}</option>
+                                    <option value="{{ $tag->id }}">{{ $tag->name }}</option>
                                 @endforeach
                             </select>
                             @error('tags')
@@ -103,7 +98,7 @@
                             <label for="image" class="form-label">Post Image</label>
                             <div class="mb-2">
                                 <img
-                                    id ="previewImage"
+                                    id="previewImage"
                                     src="{{asset('assets/backend/noimage.png')}}"
                                     alt="Post Image"
                                     class="img-fluid rounded shadow-sm"
@@ -131,8 +126,16 @@
 @endsection
 @push('scripts')
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/trix/1.3.1/trix.min.js"></script>
+    <script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
     <script>
+
+        ClassicEditor
+            .create(document.querySelector('#editorContent'))
+            .catch(error => {
+                console.error(error);
+            });
+
+
         $(document).ready(function () {
             $('#categories').select2({
                 placeholder: "Select categories",

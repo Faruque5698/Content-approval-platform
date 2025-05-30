@@ -34,7 +34,7 @@ return Application::configure(basePath: dirname(__DIR__))
             switch ($statusCode) {
                 case 404:
                     Toastr::error('Record not found.', 'Error', ['positionClass' => 'toast-top-right']);
-                    return redirect()->route('admin.users.index');
+                    return redirect()->back();
 
                 case 405:
                     Toastr::error('Method not allowed.', 'Error', ['positionClass' => 'toast-top-right']);

@@ -155,4 +155,31 @@ class PostRepository implements PostRepositoryInterface
             ->where('created_at', '<=', $thresholdDate)
             ->update(['archived_at' => now()]);
     }
+
+    public function getAllApprovedPosts($data)
+    {
+        $perPage = $data['per_page'] ?? 10;
+        $cacheKey = CacheHelper::generateCacheKey($this->model, $data, $perPage);
+
+        return Cache::remember($cacheKey, now()->addMinutes(60), function () use ($data, $perPage, $cacheKey) {
+            Log::info('DB query executed for cache key: ' . $cacheKey);
+
+            $query = $this->model->notArchived()->approved();
+
+            if (!empty($data['search'])) {
+                $query->where(function ($q) use ($data) {
+                    $q->where('title', 'like', '%' . $data['search'] . '%');
+                });
+            }
+
+            return $query->orderBy('id', 'desc')->paginate($perPage);
+        });
+
+    }
+
+    public function getPostBySlug($slug)
+    {
+        $post = $this->model->notArchived()->approved()->where('slug', $slug)->first();
+        return $post;
+    }
 }

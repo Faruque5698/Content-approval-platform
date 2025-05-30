@@ -58,6 +58,8 @@ class CacheHelper
         $user = auth()->user();
         $userKeyPart = $user ? "_user_{$user->id}" : '_guest';
 
-        return "{$baseName}:" . md5(json_encode($params) . $perPagePart . $userKeyPart) . "_v{$version}";
+        $datetime = now()->format('YmdHis');
+
+        return "{$baseName}:" . md5(json_encode($params) . $perPagePart . $userKeyPart . $datetime) . "_v{$version}";
     }
 }

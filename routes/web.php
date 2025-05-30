@@ -7,11 +7,14 @@ use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\TagController;
 use App\Http\Controllers\Admin\PostController;
+use App\Http\Controllers\Frontend\FrontendController;
 
-Route::get('/', function () {
-    return view('welcome');
-});
 
+Route::get('/',[FrontendController::class, 'index'])->name('home');
+Route::get('/{post}',[FrontendController::class, 'show'])->name('home.show');
+
+
+//Backend Routes
 Route::group(['middleware' => ['auth']], function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
