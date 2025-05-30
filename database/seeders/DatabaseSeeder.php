@@ -18,7 +18,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             UserSeeder::class,
         ]);
-        User::factory(100)->create();
-        Cache::flush();
+//        User::factory(100)->create(); // Uncomment to create 100 users
+//        Cache::flush();
     }
 }
